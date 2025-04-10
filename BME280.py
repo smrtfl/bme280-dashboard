@@ -6,7 +6,7 @@ TEMPERATURE_INPUT_FILE = "in_temp_input"
 
 class BME280:
 
-    def __init__(self, iio_path):
+    def __init__(self, iio_path=None):
         self.iio_path = iio_path or FALLBACK_IIO_PATH
 
 
