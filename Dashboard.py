@@ -23,25 +23,40 @@ class Dashboard:
         curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
 
         self.__stdscr.nodelay(True)
-        self.__stdscr.timeout(200)
+        self.__stdscr.timeout(1000)
 
+        title = "BME280 Sensor Readings"
+        screen_height, screen_width = self.__stdscr.getmaxyx()
+        readings = self.__get_bme280_readings()
+
+        self.__print_content(title, readings, screen_height, screen_width)
 
         while True:
-            self.__stdscr.clear()
+            should_reprint = False
 
-            title = "BME280 Sensor Readings"
-            readings = self.__get_bme280_readings()
+            if (new_readings := self.__get_bme280_readings()) != readings:
+                readings = new_readings
+                should_reprint = True
 
-            screen_height, screen_width = self.__stdscr.getmaxyx()
+            if (new_dimensions := self.__stdscr.getmaxyx()) != (screen_height, screen_width):
+                screen_height, screen_width = new_dimensions
+                should_reprint = True
 
-            self.__print_dashboard(title, readings, screen_height, screen_width)
-            self.__print_bottom("Press 'q' to quit", screen_height, screen_width)
-
-            self.__stdscr.refresh()
+            if should_reprint:
+                self.__print_content(title, readings, screen_height, screen_width)
 
             key = self.__stdscr.getch()
             if key == ord('q'):
                 break
+
+
+    def __print_content(self, title, readings, screen_height, screen_width):
+        self.__stdscr.clear()
+
+        self.__print_dashboard(title, readings, screen_height, screen_width)
+        self.__print_bottom("Press 'q' to quit", screen_height, screen_width)
+
+        self.__stdscr.refresh()
 
 
     def __get_bme280_readings(self):
@@ -67,6 +82,7 @@ class Dashboard:
     def __print_dashboard(self, title, readings, screen_height, screen_width):
         table_y_offset = screen_height // 2 - len(readings)
         title_y_offset = table_y_offset - 4
+        column_gap = 10
 
         self.__stdscr.addstr(title_y_offset, self.__get_centered_x_offset(title, screen_width), title, curses.A_BOLD)
 
@@ -77,18 +93,20 @@ class Dashboard:
 
         for i, (name, value) in enumerate(readings.items()):
             name_column = name.ljust(max_name_length)
-            value_column = value.center(max_value_length)
+            value_column = value.ljust(max_value_length)
+
+            row_text = (" " * column_gap).join([name_column, value_column])
 
             row_y_offset = table_y_offset + i * 2
 
             self.__stdscr.addstr(
                 row_y_offset,
-                self.__get_centered_x_offset(name_column + value_column, screen_width),
-                name_column
+                self.__get_centered_x_offset(row_text, screen_width),
+                name_column 
             )
             self.__stdscr.addstr(
                 row_y_offset,
-                self.__get_centered_x_offset(name_column + value_column, screen_width) + len(name_column) + 5 // 2,
+                self.__get_centered_x_offset(row_text, screen_width) + len(name_column) + column_gap,
                 value_column,
                 curses.A_BOLD
             )
