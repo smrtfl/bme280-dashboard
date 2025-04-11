@@ -23,7 +23,7 @@ class Dashboard:
         curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
 
         self.__stdscr.nodelay(True)
-        self.__stdscr.timeout(1000)
+        self.__stdscr.timeout(500)
 
         title = "BME280 Sensor Readings"
         screen_height, screen_width = self.__stdscr.getmaxyx()
@@ -69,8 +69,12 @@ class Dashboard:
 
         for key in data.keys():
             try:
-                data[key] = f"{self.__bme280.get_temperature()} {self.__units[key]}"
+                if sensor_value := self.__bme280.sensors.get(key.lower()).value:
+                    data[key] = f"{sensor_value:.2f} {self.__units[key]}"
+                else:
+                    data[key] = "N/A"
             except Exception as e:
+                pass
                 errors.append(e)
 
         if errors:
