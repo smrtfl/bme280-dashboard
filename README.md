@@ -10,11 +10,17 @@ Terminal dashboard to display BME280 sensor's readings
 git clone https://github.com/smrtfl/bme280-dashboard.git
 ```
 
-2. Setup Python Virtual Environment
+2. Setup Python Virtual Environment (optional)
 
 ```sh
 python3 -m venv venv/
 source venv/bin/activate
+```
+
+3. Install as executable programm
+
+```sh
+python3 setup.py install
 ```
 
 3. Start the dashboard
