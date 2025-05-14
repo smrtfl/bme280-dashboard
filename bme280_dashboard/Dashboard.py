@@ -32,18 +32,16 @@ class Dashboard:
         readings = None
 
         while True:
-            should_reprint = True
+            should_reprint = False
 
             if (new_readings := self.__get_bme280_readings()) != readings:
                 readings = new_readings
                 should_reprint = True
 
-            screen_height, screen_width = self.__stdscr.getmaxyx()
             if (new_dimensions := self.__stdscr.getmaxyx()) != (screen_height, screen_width):
                 screen_height, screen_width = new_dimensions
                 should_reprint = True
 
-            self.__print_content(title, readings, screen_height, screen_width)
             if should_reprint:
                 self.__print_content(title, readings, screen_height, screen_width)
 
@@ -52,7 +50,7 @@ class Dashboard:
 
             key = self.__stdscr.getch()
             if key == ord('q'):
-                 break
+                break
 
 
     def __print_content(self, title, readings, screen_height, screen_width):
