@@ -33,6 +33,7 @@ class BME280:
         for sensor_name in self.sensors.keys():
             self.__update_sensor_value(sensor_name)
 
+        self.__thread.start()
 
     def stop(self):
             self.__stop_event.set()
