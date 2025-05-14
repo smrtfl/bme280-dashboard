@@ -78,7 +78,7 @@ class Dashboard:
                 data[key] = f"{sensor.value:.2f} {self.__units[key]}"
             else:
                 data[key] = "N/A"
-                self.__errors.append(f"Could not read inputs of {sensor_name} sensor in {self.__bme280.get_sensor_filepath(sensor)}")
+                self.__errors.append(f"Could not read inputs of {sensor_name} sensor in {self.__bme280.sensors[sensor_name].input_file}")
 
         return data
 

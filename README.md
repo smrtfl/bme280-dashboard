@@ -20,7 +20,7 @@ source venv/bin/activate
 3. Install as executable programm
 
 ```sh
-python3 setup.py install
+python setup.py install
 ```
 
 3. Start the dashboard
