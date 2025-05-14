@@ -23,7 +23,7 @@ source venv/bin/activate
 python setup.py install
 ```
 
-3. Start the dashboard
+4. Start the dashboard
 
 ```sh
 bme280_dashboard
