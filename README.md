@@ -4,7 +4,7 @@ Terminal dashboard to display BME280 sensor's readings
 
 ## Getting Started
 
-1. Install the project
+1. Clone the project
 
 ```sh
 git clone https://github.com/smrtfl/bme280-dashboard.git
