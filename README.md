@@ -15,17 +15,18 @@ git clone https://github.com/smrtfl/bme280-dashboard.git
 ```sh
 python -m venv venv/
 source venv/bin/activate
-pip install -r requirements.txt
 ```
 
-3. Install as executable programm
+3. Start the dashboard
 
 ```sh
-python setup.py install
+python main.py
 ```
 
-4. Start the dashboard
+### Custom IIO path
+
+Optionally, you could specify IIO path to dir with sensor data
 
 ```sh
-bme280_dashboard
+python main.py --iio-path=path/to/sensor-data
 ```
